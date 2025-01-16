@@ -6,7 +6,7 @@ namespace OpenLayers.Blazor;
 /// <summary>
 ///     A base class for a shape on a map.
 /// </summary>
-public class Shape : Feature, IDisposable
+public class Shape : Feature, IDisposable, IEquatable<Shape>
 {
     internal bool _updateableParametersChanged;
     internal bool _coordinatesParametersChanged;
@@ -432,4 +432,29 @@ public class Shape : Feature, IDisposable
         if (Map != null && Layer != null)
             await Map.SetCoordinates(this, Coordinates);
     }
+
+    public bool Equals(Shape? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return
+            base.Equals(other) &&
+            ShapeType == other.ShapeType &&
+            Font == other.Font &&
+            Text == other.Text &&
+            TextColor == other.TextColor &&
+            Popup == other.Popup &&
+            Radius == other.Radius &&
+            Stroke == other.Stroke &&
+            StrokeThickness == other.StrokeThickness &&
+            Fill == other.Fill &&
+            Scale == other.Scale &&
+            TextScale == other.TextScale &&
+            ZIndex == other.ZIndex &&
+            FlatStyle.NullRespectingDynamicEqualityComparer(other.FlatStyle) &&
+            Styles.NullRespectingDynamicEqualityComparer(other.Styles);
+
+    }
+
+
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace OpenLayers.Blazor.Internal;
 
-public class Feature
+public class Feature : IEquatable<Feature>
 {
     public Feature()
     {
@@ -47,4 +47,18 @@ public class Feature
 
         return default;
     }
+
+    public bool Equals(Feature? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return
+            Id == other.Id &&
+            Type == other.Type &&
+            GeometryType == other.GeometryType &&
+            Point == other.Point &&
+            Coordinates == other.Coordinates &&
+            Properties.NullRespectingDynamicEqualityComparer(other.Properties);
+    }
+
 }

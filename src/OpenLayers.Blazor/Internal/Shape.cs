@@ -2,7 +2,7 @@
 
 namespace OpenLayers.Blazor.Internal;
 
-public class Shape : Feature
+public class Shape : Feature, IEquatable<Shape>
 {
     public Shape()
     {
@@ -21,4 +21,15 @@ public class Shape : Feature
     public List<StyleOptions>? Styles { get; set; }
 
     public double? Radius { get; set; }
+
+    public bool Equals(Shape? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return
+            base.Equals(other) &&
+            FlatStyle.NullRespectingDynamicEqualityComparer(other.FlatStyle) &&
+            Styles.NullRespectingDynamicEqualityComparer(other.Styles) &&
+            Radius == other.Radius;
+    }
 }

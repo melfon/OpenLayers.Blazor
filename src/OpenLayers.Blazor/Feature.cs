@@ -7,7 +7,7 @@ namespace OpenLayers.Blazor;
 /// <summary>
 ///     Base class of a map feature.
 /// </summary>
-public class Feature : ComponentBase
+public class Feature : ComponentBase, IEquatable<Feature>
 {
     /// <summary>
     ///     Initializes a new instance of <see cref="Feature" />.
@@ -82,4 +82,18 @@ public class Feature : ComponentBase
     /// </summary>
     [CascadingParameter]
     public Layer? Layer { get; set; }
+
+    public bool Equals(Feature? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return 
+            Id == other.Id &&
+            Type == other.Type &&
+            GeometryType == other.GeometryType &&
+            Point == other.Point &&
+            Coordinates == other.Coordinates &&
+            Properties.NullRespectingDynamicEqualityComparer(other.Properties);
+    }
+
 }
